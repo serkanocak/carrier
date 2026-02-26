@@ -1,0 +1,139 @@
+.experience-section {
+    position: relative;
+}
+
+.experience-timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.experience-timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue), transparent);
+    opacity: 0.4;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 52px;
+    margin-bottom: 32px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 4px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-purple);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-dot-pulse {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.3);
+    animation: pulse-glow 2s ease infinite;
+}
+
+.timeline-card {
+    padding: 28px;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.timeline-role {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.timeline-company {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-purple-light);
+}
+
+.timeline-badge-current {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #4ADE80;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.timeline-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin-bottom: 16px;
+}
+
+.timeline-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.timeline-highlights {
+    list-style: none;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.timeline-highlights li {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.highlight-arrow {
+    color: var(--accent-purple-light);
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media (max-width: 600px) {
+    .timeline-header {
+        flex-direction: column;
+    }
+
+    .timeline-meta {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
