@@ -55,6 +55,14 @@
     margin-left: auto;
 }
 
+.chatbot-page-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
 .chatbot-page-embed {
     flex: 1;
     overflow: hidden;
@@ -63,6 +71,99 @@
 .chatbot-page-embed gradio-app {
     width: 100%;
     height: 100%;
+}
+
+/* Full page welcome */
+.chatbot-page-welcome {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: var(--bg-primary);
+    background-image: var(--gradient-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    gap: 16px;
+    animation: fadeIn 0.5s ease;
+}
+
+.welcome-avatar-lg {
+    font-size: 4rem;
+    line-height: 1;
+    animation: float 3s ease-in-out infinite;
+}
+
+.welcome-title-lg {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-text-lg {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.welcome-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+    max-width: 560px;
+    width: 100%;
+}
+
+.suggestion-chip-lg {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    font-family: var(--font-sans);
+}
+
+.suggestion-chip-lg:hover {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+}
+
+.chip-emoji {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.welcome-dismiss-lg {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    margin-top: 8px;
+    font-family: var(--font-sans);
+    transition: color 0.2s;
+}
+
+.welcome-dismiss-lg:hover {
+    color: var(--accent-purple-light);
 }
 
 @media (max-width: 600px) {
@@ -74,5 +175,13 @@
 
     .chatbot-page-desc {
         display: none;
+    }
+
+    .welcome-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-title-lg {
+        font-size: 1.3rem;
     }
 }
