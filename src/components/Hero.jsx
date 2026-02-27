@@ -53,7 +53,7 @@ export default function Hero() {
                 <FiCloud size={14} /> AWS & Docker
             </div>
             <div className="floating-badge badge-3">
-                <FiServer size={14} /> Microservices
+                <FiServer size={14} /> Project Management
             </div>
 
             <div className="container hero-content">
@@ -72,10 +72,8 @@ export default function Hero() {
                 </div>
 
                 <p className="hero-desc">
-                    15+ years building scalable enterprise systems, microservices architectures &amp; AI-driven applications.
-                    Expert in .NET ecosystem, SAP ABAP, AWS, Docker, and enterprise ERP integrations.
-
-                    Based in <strong>Frankfurt, Germany</strong>.
+                    15+ years building scalable enterprise systems with expertise in .NET, SAP ABAP,
+                    ERP integrations, AWS & Docker. Based in <strong>Frankfurt, Germany</strong>.
                 </p>
 
                 <div className="hero-stats">
