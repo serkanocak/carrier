@@ -6,8 +6,9 @@ import './Hero.css'
 const TITLES = [
     'Senior Software Developer',
     'Tech Lead',
-    '.NET & Cloud Expert',
-    'Microservices Architect',
+    '.NET & SAP ABAP Expert',
+    'Software Project Manager',
+    'Product Owner',
     'Enterprise Systems Builder',
 ]
 
@@ -49,7 +50,7 @@ export default function Hero() {
                 <FiCode size={14} /> .NET Core
             </div>
             <div className="floating-badge badge-2">
-                <FiCloud size={14} /> Azure &amp; AWS
+                <FiCloud size={14} /> AWS & Docker
             </div>
             <div className="floating-badge badge-3">
                 <FiServer size={14} /> Microservices
@@ -72,7 +73,8 @@ export default function Hero() {
 
                 <p className="hero-desc">
                     15+ years building scalable enterprise systems, microservices architectures &amp; AI-driven applications.
-                    Expert in .NET ecosystem, cloud platforms, and SAP/ERP integrations.
+                    Expert in .NET ecosystem, SAP ABAP, AWS, Docker, and enterprise ERP integrations.
+
                     Based in <strong>Frankfurt, Germany</strong>.
                 </p>
 

@@ -21,12 +21,11 @@ const SKILL_AREAS = [
         title: 'Cloud & DevOps',
         color: '#3B82F6',
         skills: [
-            { name: 'Microsoft Azure', level: 88 },
             { name: 'Amazon AWS', level: 80 },
             { name: 'Docker', level: 90 },
             { name: 'Kubernetes', level: 80 },
             { name: 'CI/CD Pipelines', level: 88 },
-            { name: 'Azure DevOps', level: 85 },
+            { name: 'Linux / Shell', level: 80 },
         ],
     },
     {
