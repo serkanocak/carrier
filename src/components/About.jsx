@@ -11,7 +11,8 @@ const TERMINAL_LINES = [
     { delay: 1450, text: '{', type: 'output' },
     { delay: 1550, text: '  "years": 15,', type: 'output-key' },
     { delay: 1650, text: '  "currentRole": "Senior Dev / Tech Lead @ Mastra GmbH",', type: 'output-key' },
-    { delay: 1750, text: '  "expertise": [".NET", "SAP ABAP", "Microservices", "ERP"],', type: 'output-key' },
+    { delay: 1750, text: '  "expertise": [".NET", "SAP ABAP", "Project Management", "ERP"],', type: 'output-key' },
+
 
     { delay: 1850, text: '  "projects": "20+ enterprise systems built"', type: 'output-key' },
     { delay: 1950, text: '}', type: 'output' },
@@ -68,7 +69,8 @@ export default function About() {
                             (<strong>AWS & Docker</strong>), and complex <strong>SAP/ERP integrations</strong>.
 
                             I have led multi-tenant SaaS platform development, optimized CI/CD pipelines, and
-                            architected microservices that power mission-critical business operations.
+                            led software projects that power mission-critical business operations.
+
                         </p>
                         <p className="about-text">
                             Currently based in <strong>Frankfurt, Germany</strong>, I bring not just technical
