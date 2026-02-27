@@ -185,3 +185,42 @@
         font-size: 1.3rem;
     }
 }
+
+.chatbot-page-loading,
+.chatbot-page-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-light);
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    text-align: center;
+    padding: 2rem;
+}
+
+.chatbot-page-loading h3,
+.chatbot-page-error h3 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.chatbot-page-loading p,
+.chatbot-page-error p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.loading-spinner {
+    animation: spin 2s linear infinite;
+    color: var(--accent-purple-light);
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
