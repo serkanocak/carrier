@@ -15,16 +15,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 
-// App Check — reCAPTCHA v3 protects Firestore & Auth from abuse
-// In dev mode, debug token is printed to browser console
-if (import.meta.env.DEV) {
-    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true
+// App Check: reCAPTCHA v3 — only active in production
+// Skipped on localhost to avoid reCAPTCHA domain restriction errors
+if (!import.meta.env.DEV) {
+    initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
+        isTokenAutoRefreshEnabled: true,
+    })
 }
-
-initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
-    isTokenAutoRefreshEnabled: true,
-})
 
 export const auth = getAuth(app)
 export const db = getFirestore(app)
