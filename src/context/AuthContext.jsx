@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import {
-    signInWithRedirect,
-    getRedirectResult,
+    signInWithPopup,
     signOut as firebaseSignOut,
     onAuthStateChanged,
 } from 'firebase/auth'
@@ -12,33 +11,11 @@ const AuthContext = createContext(null)
 
 export const ADMIN_EMAIL = 'serkanocak@gmail.com'
 
-async function saveMemberIfNew(u) {
-    const ref = doc(db, 'members', u.uid)
-    const snap = await getDoc(ref)
-    if (!snap.exists()) {
-        await setDoc(ref, {
-            name: u.displayName,
-            email: u.email,
-            photoURL: u.photoURL,
-            joinedAt: serverTimestamp(),
-        })
-    }
-}
-
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        // Handle redirect result after Google redirects back
-        getRedirectResult(auth)
-            .then(async (result) => {
-                if (result?.user) {
-                    await saveMemberIfNew(result.user)
-                }
-            })
-            .catch((err) => console.error('Redirect result error', err))
-
         const unsub = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser)
             setLoading(false)
@@ -46,8 +23,24 @@ export function AuthProvider({ children }) {
         return unsub
     }, [])
 
-    const signInWithGoogle = () => {
-        signInWithRedirect(auth, googleProvider)
+    const signInWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider)
+            const u = result.user
+            // Save to Firestore on first login
+            const ref = doc(db, 'members', u.uid)
+            const snap = await getDoc(ref)
+            if (!snap.exists()) {
+                await setDoc(ref, {
+                    name: u.displayName,
+                    email: u.email,
+                    photoURL: u.photoURL,
+                    joinedAt: serverTimestamp(),
+                })
+            }
+        } catch (err) {
+            console.error('Sign in error:', err.code, err.message)
+        }
     }
 
     const signOut = () => firebaseSignOut(auth)
