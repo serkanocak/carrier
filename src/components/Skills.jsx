@@ -1,4 +1,5 @@
 import { FiServer, FiCloud, FiCpu, FiLayout } from 'react-icons/fi'
+import AuthGate from './AuthGate'
 import './Skills.css'
 
 const SKILL_AREAS = [
@@ -66,37 +67,39 @@ export default function Skills() {
                     <p className="section-desc">15+ years of hands-on experience across the full enterprise software stack</p>
                 </div>
 
-                <div className="skills-grid">
-                    {SKILL_AREAS.map(({ icon: Icon, title, color, skills }) => (
-                        <div className="skill-card glass-card" key={title}>
-                            <div className="skill-card-header">
-                                <div className="skill-icon" style={{ background: `${color}22`, color }}>
-                                    <Icon size={22} />
-                                </div>
-                                <h3 className="skill-card-title">{title}</h3>
-                            </div>
-                            <div className="skill-bars">
-                                {skills.map(s => (
-                                    <div key={s.name} className="skill-bar-item">
-                                        <div className="skill-bar-info">
-                                            <span className="skill-name">{s.name}</span>
-                                            <span className="skill-pct">{s.level}%</span>
-                                        </div>
-                                        <div className="skill-bar-bg">
-                                            <div
-                                                className="skill-bar-fill"
-                                                style={{
-                                                    width: `${s.level}%`,
-                                                    background: `linear-gradient(90deg, ${color}, ${color}88)`,
-                                                }}
-                                            />
-                                        </div>
+                <AuthGate label="technical skills">
+                    <div className="skills-grid">
+                        {SKILL_AREAS.map(({ icon: Icon, title, color, skills }) => (
+                            <div className="skill-card glass-card" key={title}>
+                                <div className="skill-card-header">
+                                    <div className="skill-icon" style={{ background: `${color}22`, color }}>
+                                        <Icon size={22} />
                                     </div>
-                                ))}
+                                    <h3 className="skill-card-title">{title}</h3>
+                                </div>
+                                <div className="skill-bars">
+                                    {skills.map(s => (
+                                        <div key={s.name} className="skill-bar-item">
+                                            <div className="skill-bar-info">
+                                                <span className="skill-name">{s.name}</span>
+                                                <span className="skill-pct">{s.level}%</span>
+                                            </div>
+                                            <div className="skill-bar-bg">
+                                                <div
+                                                    className="skill-bar-fill"
+                                                    style={{
+                                                        width: `${s.level}%`,
+                                                        background: `linear-gradient(90deg, ${color}, ${color}88)`,
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </AuthGate>
             </div>
         </section>
     )

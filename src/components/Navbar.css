@@ -102,6 +102,12 @@
     padding: 4px;
 }
 
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 @media (max-width: 768px) {
     .navbar-toggle {
         display: flex;

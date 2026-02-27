@@ -1,4 +1,5 @@
 import { FiExternalLink, FiGithub } from 'react-icons/fi'
+import AuthGate from './AuthGate'
 import './Projects.css'
 
 const PROJECTS = [
@@ -62,41 +63,43 @@ export default function Projects() {
                     <p className="section-desc">Highlights from 15+ years of building mission-critical enterprise systems</p>
                 </div>
 
-                <div className="projects-grid">
-                    {PROJECTS.map((p, i) => (
-                        <div className="project-card glass-card" key={i}>
-                            <div className="project-card-top">
-                                <div className="project-icon" style={{ border: `1px solid ${p.color}44`, background: `${p.color}11` }}>
-                                    <span style={{ fontSize: '1.8rem' }}>{p.icon}</span>
-                                </div>
-                                <div className="project-links">
-                                    <div className="project-number" style={{ color: p.color }}>
-                                        0{i + 1}
+                <AuthGate label="enterprise projects">
+                    <div className="projects-grid">
+                        {PROJECTS.map((p, i) => (
+                            <div className="project-card glass-card" key={i}>
+                                <div className="project-card-top">
+                                    <div className="project-icon" style={{ border: `1px solid ${p.color}44`, background: `${p.color}11` }}>
+                                        <span style={{ fontSize: '1.8rem' }}>{p.icon}</span>
+                                    </div>
+                                    <div className="project-links">
+                                        <div className="project-number" style={{ color: p.color }}>
+                                            0{i + 1}
+                                        </div>
                                     </div>
                                 </div>
+                                <h3 className="project-title" style={{ color: 'var(--text-primary)' }}>{p.title}</h3>
+                                <p className="project-desc">{p.description}</p>
+                                <ul className="project-highlights">
+                                    {p.highlights.map(h => (
+                                        <li key={h}>
+                                            <span className="highlight-dot" style={{ background: p.color }} />
+                                            {h}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="project-tags">
+                                    {p.tags.map(t => (
+                                        <span className="tag" key={t} style={{
+                                            background: `${p.color}14`,
+                                            borderColor: `${p.color}30`,
+                                            color: `${p.color}`,
+                                        }}>{t}</span>
+                                    ))}
+                                </div>
                             </div>
-                            <h3 className="project-title" style={{ color: 'var(--text-primary)' }}>{p.title}</h3>
-                            <p className="project-desc">{p.description}</p>
-                            <ul className="project-highlights">
-                                {p.highlights.map(h => (
-                                    <li key={h}>
-                                        <span className="highlight-dot" style={{ background: p.color }} />
-                                        {h}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="project-tags">
-                                {p.tags.map(t => (
-                                    <span className="tag" key={t} style={{
-                                        background: `${p.color}14`,
-                                        borderColor: `${p.color}30`,
-                                        color: `${p.color}`,
-                                    }}>{t}</span>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </AuthGate>
             </div>
         </section>
     )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiMenu, FiX, FiMessageSquare } from 'react-icons/fi'
+import UserMenu from './UserMenu'
 import './Navbar.css'
 
 const navLinks = [
@@ -57,14 +58,18 @@ export default function Navbar() {
                     </li>
                 </ul>
 
-                <button
-                    className="navbar-toggle"
-                    onClick={() => setMobileOpen(!mobileOpen)}
-                    aria-label="Toggle menu"
-                >
-                    {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-                </button>
+                <div className="navbar-right">
+                    <UserMenu />
+                    <button
+                        className="navbar-toggle"
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+                    </button>
+                </div>
             </div>
         </nav>
     )
 }
+

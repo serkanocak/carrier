@@ -1,3 +1,4 @@
+import AuthGate from './AuthGate'
 import './Education.css'
 
 const EDUCATION = [
@@ -41,62 +42,64 @@ export default function Education() {
             <div className="container">
                 <div className="section-header">
                     <div className="section-tag">🎓 Background</div>
-                    <h2 className="section-title">Education & <span>Languages</span></h2>
+                    <h2 className="section-title">Education &amp; <span>Languages</span></h2>
                 </div>
 
-                <div className="edu-lang-grid">
-                    {/* Education */}
-                    <div>
-                        <h3 className="edu-subsection-title">Academic Background</h3>
-                        <div className="education-list">
-                            {EDUCATION.map((e, i) => (
-                                <div className="edu-card glass-card" key={i}>
-                                    <div className="edu-icon" style={{ background: `${e.color}18`, border: `1px solid ${e.color}33` }}>
-                                        <span style={{ fontSize: '1.5rem' }}>{e.icon}</span>
-                                    </div>
-                                    <div className="edu-body">
-                                        <div className="edu-header">
-                                            <h4 className="edu-degree">{e.degree}</h4>
-                                            <span className="edu-period">{e.period}</span>
+                <AuthGate label="education &amp; language details">
+                    <div className="edu-lang-grid">
+                        {/* Education */}
+                        <div>
+                            <h3 className="edu-subsection-title">Academic Background</h3>
+                            <div className="education-list">
+                                {EDUCATION.map((e, i) => (
+                                    <div className="edu-card glass-card" key={i}>
+                                        <div className="edu-icon" style={{ background: `${e.color}18`, border: `1px solid ${e.color}33` }}>
+                                            <span style={{ fontSize: '1.5rem' }}>{e.icon}</span>
                                         </div>
-                                        <p className="edu-institution" style={{ color: e.color }}>{e.institution}</p>
-                                        <p className="edu-desc">{e.desc}</p>
+                                        <div className="edu-body">
+                                            <div className="edu-header">
+                                                <h4 className="edu-degree">{e.degree}</h4>
+                                                <span className="edu-period">{e.period}</span>
+                                            </div>
+                                            <p className="edu-institution" style={{ color: e.color }}>{e.institution}</p>
+                                            <p className="edu-desc">{e.desc}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Languages */}
-                    <div>
-                        <h3 className="edu-subsection-title">Languages Spoken</h3>
-                        <div className="languages-card glass-card">
-                            {LANGUAGES.map((lang, i) => (
-                                <div className="language-item" key={i}>
-                                    <div className="lang-info">
-                                        <span className="lang-flag">{lang.flag}</span>
-                                        <div className="lang-text">
-                                            <span className="lang-name">{lang.name}</span>
-                                            <span className="lang-level">{lang.level}</span>
+                        {/* Languages */}
+                        <div>
+                            <h3 className="edu-subsection-title">Languages Spoken</h3>
+                            <div className="languages-card glass-card">
+                                {LANGUAGES.map((lang, i) => (
+                                    <div className="language-item" key={i}>
+                                        <div className="lang-info">
+                                            <span className="lang-flag">{lang.flag}</span>
+                                            <div className="lang-text">
+                                                <span className="lang-name">{lang.name}</span>
+                                                <span className="lang-level">{lang.level}</span>
+                                            </div>
+                                            <span className="lang-pct">{lang.pct}%</span>
                                         </div>
-                                        <span className="lang-pct">{lang.pct}%</span>
+                                        <div className="lang-bar-bg">
+                                            <div
+                                                className="lang-bar-fill"
+                                                style={{ width: `${lang.pct}%`, background: lang.color }}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="lang-bar-bg">
-                                        <div
-                                            className="lang-bar-fill"
-                                            style={{ width: `${lang.pct}%`, background: lang.color }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
 
-                            <div className="language-note">
-                                <span>🎯</span>
-                                <span>German B2 exam targeted for May 2026</span>
+                                <div className="language-note">
+                                    <span>🎯</span>
+                                    <span>German B2 exam targeted for May 2026</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </AuthGate>
             </div>
         </section>
     )

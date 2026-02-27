@@ -1,4 +1,5 @@
 import { FiCalendar, FiMapPin, FiChevronRight } from 'react-icons/fi'
+import AuthGate from './AuthGate'
 import './Experience.css'
 
 const JOBS = [
@@ -110,41 +111,43 @@ export default function Experience() {
                     <p className="section-desc">15+ years shaping enterprise software across Turkey and Germany</p>
                 </div>
 
-                <div className="experience-timeline">
-                    {JOBS.map((job, i) => (
-                        <div className="timeline-item" key={i}>
-                            <div className="timeline-dot" style={job.current ? { background: 'var(--gradient-primary)' } : {}}>
-                                {job.current && <span className="timeline-dot-pulse" />}
-                            </div>
-                            <div className="timeline-card glass-card">
-                                <div className="timeline-header">
-                                    <div>
-                                        <h3 className="timeline-role">{job.role}</h3>
-                                        <p className="timeline-company">{job.company}</p>
+                <AuthGate label="professional experience">
+                    <div className="experience-timeline">
+                        {JOBS.map((job, i) => (
+                            <div className="timeline-item" key={i}>
+                                <div className="timeline-dot" style={job.current ? { background: 'var(--gradient-primary)' } : {}}>
+                                    {job.current && <span className="timeline-dot-pulse" />}
+                                </div>
+                                <div className="timeline-card glass-card">
+                                    <div className="timeline-header">
+                                        <div>
+                                            <h3 className="timeline-role">{job.role}</h3>
+                                            <p className="timeline-company">{job.company}</p>
+                                        </div>
+                                        {job.current && <span className="timeline-badge-current">Current</span>}
                                     </div>
-                                    {job.current && <span className="timeline-badge-current">Current</span>}
-                                </div>
-                                <div className="timeline-meta">
-                                    <span><FiCalendar size={13} /> {job.period}</span>
-                                    <span><FiMapPin size={13} /> {job.location}</span>
-                                </div>
-                                <ul className="timeline-highlights">
-                                    {job.highlights.map((h, j) => (
-                                        <li key={j}>
-                                            <FiChevronRight size={13} className="highlight-arrow" />
-                                            {h}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="timeline-tags">
-                                    {job.tags.map(t => (
-                                        <span className="tag" key={t}>{t}</span>
-                                    ))}
+                                    <div className="timeline-meta">
+                                        <span><FiCalendar size={13} /> {job.period}</span>
+                                        <span><FiMapPin size={13} /> {job.location}</span>
+                                    </div>
+                                    <ul className="timeline-highlights">
+                                        {job.highlights.map((h, j) => (
+                                            <li key={j}>
+                                                <FiChevronRight size={13} className="highlight-arrow" />
+                                                {h}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <div className="timeline-tags">
+                                        {job.tags.map(t => (
+                                            <span className="tag" key={t}>{t}</span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </AuthGate>
             </div>
         </section>
     )
