@@ -94,11 +94,21 @@ function ChatbotUI() {
             content: m.content,
         }))
 
+        // Get fresh reCAPTCHA token for each message
+        let recaptchaToken = ''
+        if (executeRecaptcha) {
+            try {
+                recaptchaToken = await executeRecaptcha('chatbot_message')
+            } catch (err) {
+                console.error('reCAPTCHA token error:', err)
+            }
+        }
+
         try {
             const response = await fetch(CHAT_API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, history }),
+                body: JSON.stringify({ message: text, history, recaptchaToken }),
             })
 
             const data = await response.json()

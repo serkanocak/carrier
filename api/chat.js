@@ -234,9 +234,32 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Missing GOOGLE_API_KEY configuration' });
     }
 
-    const { message, history = [] } = req.body;
+    const { message, history = [], recaptchaToken } = req.body;
     if (!message) {
         return res.status(400).json({ error: 'Missing message' });
+    }
+
+    // reCAPTCHA verification — block bots from calling API directly
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    if (recaptchaSecret) {
+        if (!recaptchaToken) {
+            return res.status(403).json({ error: 'Missing reCAPTCHA token' });
+        }
+
+        try {
+            const recaptchaRes = await fetch(
+                `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${recaptchaToken}`,
+                { method: 'POST' }
+            );
+            const recaptchaData = await recaptchaRes.json();
+
+            if (!recaptchaData.success || recaptchaData.score < 0.5) {
+                return res.status(403).json({ error: 'reCAPTCHA verification failed. Bot traffic detected.' });
+            }
+        } catch (err) {
+            console.error('reCAPTCHA verification error:', err);
+            return res.status(500).json({ error: 'reCAPTCHA verification service unavailable' });
+        }
     }
 
     // Build messages array

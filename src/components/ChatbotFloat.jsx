@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMessageSquare, FiX, FiExternalLink, FiSend, FiUser } from 'react-icons/fi'
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import './ChatbotFloat.css'
 
 const SUGGESTIONS = [
@@ -14,7 +15,8 @@ const SUGGESTIONS = [
 
 const CHAT_API = '/api/chat'
 
-export default function ChatbotFloat() {
+function ChatbotFloatInner() {
+    const { executeRecaptcha } = useGoogleReCaptcha()
     const [open, setOpen] = useState(false)
     const [showWelcome, setShowWelcome] = useState(true)
     const [messages, setMessages] = useState([])
@@ -49,11 +51,21 @@ export default function ChatbotFloat() {
             content: m.content,
         }))
 
+        // Get fresh reCAPTCHA token for each message
+        let recaptchaToken = ''
+        if (executeRecaptcha) {
+            try {
+                recaptchaToken = await executeRecaptcha('chatbot_float_message')
+            } catch (err) {
+                console.error('reCAPTCHA token error:', err)
+            }
+        }
+
         try {
             const response = await fetch(CHAT_API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, history }),
+                body: JSON.stringify({ message: text, history, recaptchaToken }),
             })
 
             const data = await response.json()
@@ -223,5 +235,21 @@ export default function ChatbotFloat() {
                 </div>
             </div>
         </>
+    )
+}
+
+// Wrapper to provide reCAPTCHA context
+export default function ChatbotFloat() {
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+
+    if (!siteKey) {
+        // Fallback: render without reCAPTCHA in case key is missing
+        return <ChatbotFloatInner />
+    }
+
+    return (
+        <GoogleReCaptchaProvider reCaptchaKey={siteKey}>
+            <ChatbotFloatInner />
+        </GoogleReCaptchaProvider>
     )
 }
