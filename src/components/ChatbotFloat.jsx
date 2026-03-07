@@ -1,13 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { FiMessageSquare, FiX, FiExternalLink, FiSend } from 'react-icons/fi'
+import { FiMessageSquare, FiX, FiExternalLink, FiSend, FiUser } from 'react-icons/fi'
 import './ChatbotFloat.css'
 
-const GRADIO_SRC = 'https://gradio.s3-us-west-2.amazonaws.com/5.49.1/gradio.js'
-const SPACE_URL = 'https://serkanocak-career-conversation.hf.space'
-
 const SUGGESTIONS = [
-    { emoji: '👨‍💻', text: 'Tell me about Serkan\'s experience' },
+    { emoji: '👨‍💻', text: "Tell me about Serkan's experience" },
     { emoji: '⚙️', text: 'What are his technical skills?' },
     { emoji: '🏢', text: 'Which companies has he worked at?' },
     { emoji: '🎓', text: 'What is his education background?' },
@@ -15,59 +12,102 @@ const SUGGESTIONS = [
     { emoji: '🚀', text: 'Tell me about his projects' },
 ]
 
-// Load the Gradio script once globally
-let scriptLoaded = false
-function loadGradioScript() {
-    if (scriptLoaded || document.querySelector(`script[src="${GRADIO_SRC}"]`)) {
-        scriptLoaded = true
-        return
-    }
-    const script = document.createElement('script')
-    script.type = 'module'
-    script.src = GRADIO_SRC
-    document.head.appendChild(script)
-    scriptLoaded = true
-}
-
-function sendToGradio(container, text) {
-    const textarea = container.querySelector('textarea')
-    if (textarea) {
-        const nativeSet = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set
-        nativeSet.call(textarea, text)
-        textarea.dispatchEvent(new Event('input', { bubbles: true }))
-        setTimeout(() => {
-            const btn = container.querySelector('button[aria-label="Submit"]') ||
-                container.querySelector('button.submit') ||
-                [...container.querySelectorAll('button')].find(b => b.querySelector('svg'))
-            if (btn) btn.click()
-        }, 200)
-    }
-}
+const CHAT_API = '/api/chat'
 
 export default function ChatbotFloat() {
     const [open, setOpen] = useState(false)
     const [showWelcome, setShowWelcome] = useState(true)
-    const embedRef = useRef(null)
+    const [messages, setMessages] = useState([])
+    const [input, setInput] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const messagesEndRef = useRef(null)
+    const inputRef = useRef(null)
 
+    // Auto-scroll
     useEffect(() => {
-        loadGradioScript()
-    }, [])
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages, isLoading])
 
+    // Focus input when panel opens
     useEffect(() => {
-        if (open && embedRef.current && !embedRef.current.querySelector('gradio-app')) {
-            const app = document.createElement('gradio-app')
-            app.setAttribute('src', SPACE_URL)
-            app.setAttribute('eager', 'true')
-            app.style.height = '100%'
-            embedRef.current.appendChild(app)
+        if (open && !showWelcome) {
+            setTimeout(() => inputRef.current?.focus(), 300)
         }
-    }, [open])
+    }, [open, showWelcome])
+
+    const sendMessage = async (text) => {
+        if (!text.trim() || isLoading) return
+
+        const userMsg = { role: 'user', content: text }
+        setMessages(prev => [...prev, userMsg])
+        setInput('')
+        setIsLoading(true)
+        setShowWelcome(false)
+
+        const history = messages.map(m => ({
+            role: m.role,
+            content: m.content,
+        }))
+
+        try {
+            const response = await fetch(CHAT_API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, history }),
+            })
+
+            const data = await response.json()
+
+            if (response.ok && data.reply) {
+                setMessages(prev => [...prev, { role: 'assistant', content: data.reply }])
+            } else {
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: '⚠️ Sorry, I could not get a response right now.',
+                    isError: true,
+                }])
+            }
+        } catch (err) {
+            console.error('Chat error:', err)
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: '⚠️ Connection error. Please try again.',
+                isError: true,
+            }])
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        sendMessage(input)
+    }
 
     const handleSuggestion = (text) => {
-        setShowWelcome(false)
-        if (embedRef.current) {
-            sendToGradio(embedRef.current, text)
+        sendMessage(text)
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            sendMessage(input)
         }
+    }
+
+    const formatMessage = (text) => {
+        if (!text) return ''
+        const lines = text.split('\n')
+        const formatted = lines.map((line, i) => {
+            let processed = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>')
+            if (processed.match(/^[•\-]\s/)) {
+                processed = `<span class="chat-bullet">›</span> ${processed.replace(/^[•\-]\s/, '')}`
+                return `<div class="chat-bullet-line">${processed}</div>`
+            }
+            return processed
+        }).join('<br/>')
+        return formatted
     }
 
     return (
@@ -82,7 +122,7 @@ export default function ChatbotFloat() {
                 {!open && <span className="chatbot-toggle-label">Ask My CV</span>}
             </button>
 
-            {/* Chat panel — always in DOM so gradio-app persists */}
+            {/* Chat panel */}
             <div className={`chatbot-panel ${open ? 'chatbot-panel-visible' : ''}`}>
                 <div className="chatbot-panel-header">
                     <div className="chatbot-panel-info">
@@ -124,9 +164,64 @@ export default function ChatbotFloat() {
                     </div>
                 )}
 
-                <div className="chatbot-embed" ref={embedRef} />
+                {/* Chat content */}
+                <div className="chatbot-chat-content">
+                    <div className="chatbot-messages-scroll">
+                        {messages.map((msg, i) => (
+                            <div key={i} className={`float-msg float-msg-${msg.role} ${msg.isError ? 'float-msg-error' : ''}`}>
+                                <div className="float-msg-avatar">
+                                    {msg.role === 'assistant' ? '🤖' : <FiUser size={12} />}
+                                </div>
+                                <div className="float-msg-bubble">
+                                    <div
+                                        className="float-msg-text"
+                                        dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+
+                        {isLoading && (
+                            <div className="float-msg float-msg-assistant">
+                                <div className="float-msg-avatar">🤖</div>
+                                <div className="float-msg-bubble">
+                                    <div className="float-typing">
+                                        <span className="float-typing-dot" />
+                                        <span className="float-typing-dot" />
+                                        <span className="float-typing-dot" />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input */}
+                    <form className="chatbot-float-input-area" onSubmit={handleSubmit}>
+                        <div className="chatbot-float-input-wrapper">
+                            <textarea
+                                ref={inputRef}
+                                className="chatbot-float-input"
+                                placeholder="Type a message..."
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                rows={1}
+                                disabled={isLoading}
+                            />
+                            <button
+                                type="submit"
+                                className="chatbot-float-send"
+                                disabled={!input.trim() || isLoading}
+                                aria-label="Send message"
+                            >
+                                <FiSend size={14} />
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     )
 }
-
