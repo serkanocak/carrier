@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { FiArrowRight, FiDownload, FiMessageSquare, FiCode, FiServer, FiCloud } from 'react-icons/fi'
+import { FiDownload, FiCode, FiServer, FiCloud } from 'react-icons/fi'
 import './Hero.css'
 
 const TITLES = [
@@ -98,17 +97,6 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <div className="hero-ctas">
-                    <a href="#projects" className="btn-primary" onClick={e => {
-                        e.preventDefault()
-                        document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
-                    }}>
-                        Explore Projects <FiArrowRight size={16} />
-                    </a>
-                    <Link to="/chatbot" className="btn-outline btn-chatbot-hero">
-                        <FiMessageSquare size={16} /> Ask My CV
-                    </Link>
-                </div>
             </div>
 
             <div className="hero-scroll-indicator">
