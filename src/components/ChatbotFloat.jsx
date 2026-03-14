@@ -109,12 +109,21 @@ function ChatbotFloatInner() {
 
     const formatMessage = (text) => {
         if (!text) return ''
-        const lines = text.split('\n')
-        const formatted = lines.map((line, i) => {
+
+        // Simple HTML escape to prevent XSS
+        let escaped = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+
+        const lines = escaped.split('\n')
+        const formatted = lines.map((line) => {
             let processed = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>')
-            if (processed.match(/^[•\-]\s/)) {
-                processed = `<span class="chat-bullet">›</span> ${processed.replace(/^[•\-]\s/, '')}`
+            if (processed.match(/^[•-]\s/)) {
+                processed = `<span class="chat-bullet">›</span> ${processed.replace(/^[•-]\s/, '')}`
                 return `<div class="chat-bullet-line">${processed}</div>`
             }
             return processed
@@ -128,7 +137,7 @@ function ChatbotFloatInner() {
             <button
                 className={`chatbot-toggle ${open ? 'open' : ''}`}
                 onClick={() => setOpen(!open)}
-                aria-label="Open career chatbot"
+                aria-label={open ? 'Close career chatbot' : 'Open career chatbot'}
             >
                 {open ? <FiX size={22} /> : <FiMessageSquare size={22} />}
                 {!open && <span className="chatbot-toggle-label">Ask My CV</span>}
@@ -139,7 +148,7 @@ function ChatbotFloatInner() {
                 <div className="chatbot-panel-header">
                     <div className="chatbot-panel-info">
                         <span className="chatbot-dot" />
-                        <span>Serkan's Career Assistant</span>
+                        <span>Serkan&apos;s Career Assistant</span>
                     </div>
                     <div className="chatbot-panel-actions">
                         <Link to="/chatbot" className="chatbot-fullscreen" title="Open fullscreen">
@@ -154,10 +163,10 @@ function ChatbotFloatInner() {
                 {/* Welcome overlay */}
                 {showWelcome && open && (
                     <div className="chatbot-welcome">
-                        <div className="welcome-avatar">🤖</div>
-                        <h4 className="welcome-title">Hi! I'm Serkan's AI Assistant</h4>
+                        <div className="welcome-avatar" role="img" aria-label="Robot emoji">🤖</div>
+                        <h4 className="welcome-title">Hi! I&apos;m Serkan&apos;s AI Assistant</h4>
                         <p className="welcome-text">
-                            Ask me anything about Serkan's career, skills, or experience. Here are some ideas:
+                            Ask me anything about Serkan&apos;s career, skills, or experience. Here are some ideas:
                         </p>
                         <div className="welcome-suggestions">
                             {SUGGESTIONS.map((s, i) => (
@@ -181,7 +190,7 @@ function ChatbotFloatInner() {
                     <div className="chatbot-messages-scroll">
                         {messages.map((msg, i) => (
                             <div key={i} className={`float-msg float-msg-${msg.role} ${msg.isError ? 'float-msg-error' : ''}`}>
-                                <div className="float-msg-avatar">
+                                <div className="float-msg-avatar" role="img" aria-label={msg.role === 'assistant' ? 'Assistant' : 'User'}>
                                     {msg.role === 'assistant' ? '🤖' : <FiUser size={12} />}
                                 </div>
                                 <div className="float-msg-bubble">

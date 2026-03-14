@@ -31,7 +31,7 @@ export default function Navbar() {
     return (
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="navbar-container">
-                <a href="#" className="navbar-logo" onClick={e => handleNavClick(e, '#')}>
+                <a href="#" className="navbar-logo" onClick={e => handleNavClick(e, '#')} aria-label="Serkan Ocak Portfolio Home">
                     <span className="logo-bracket">&lt;</span>
                     <span className="logo-name">SO</span>
                     <span className="logo-bracket">/&gt;</span>

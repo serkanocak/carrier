@@ -154,17 +154,21 @@ function ChatbotUI() {
     const formatMessage = (text) => {
         if (!text) return ''
 
-        // Split by lines to handle bullet points
-        const lines = text.split('\n')
-        const formatted = lines.map((line, i) => {
-            // Bold
+        // Simple HTML escape to prevent XSS
+        let escaped = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+
+        const lines = escaped.split('\n')
+        const formatted = lines.map((line) => {
             let processed = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            // Italic
             processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>')
-            // Bullet points
-            if (processed.match(/^[•\-]\s/)) {
-                processed = `<span class="chat-bullet">›</span> ${processed.replace(/^[•\-]\s/, '')}`
-                return `<div class="chat-bullet-line" key="${i}">${processed}</div>`
+            if (processed.match(/^[•-]\s/)) {
+                processed = `<span class="chat-bullet">›</span> ${processed.replace(/^[•-]\s/, '')}`
+                return `<div class="chat-bullet-line">${processed}</div>`
             }
             return processed
         }).join('<br/>')
@@ -183,7 +187,7 @@ function ChatbotUI() {
                     <h1>Career Assistant</h1>
                 </div>
                 <p className="chatbot-page-desc">
-                    Ask me anything about Serkan's experience, skills, projects, or background.
+                    Ask me anything about Serkan&apos;s experience, skills, projects, or background.
                 </p>
             </div>
 
@@ -207,10 +211,10 @@ function ChatbotUI() {
                 {/* Welcome screen */}
                 {verified && showWelcome && (
                     <div className="chatbot-page-welcome">
-                        <div className="welcome-avatar-lg">🤖</div>
-                        <h2 className="welcome-title-lg">Hi! I'm Serkan's AI Career Assistant</h2>
+                        <div className="welcome-avatar-lg" role="img" aria-label="Robot emoji">🤖</div>
+                        <h2 className="welcome-title-lg">Hi! I&apos;m Serkan&apos;s AI Career Assistant</h2>
                         <p className="welcome-text-lg">
-                            I know everything about Serkan's professional background, skills, and experience.
+                            I know everything about Serkan&apos;s professional background, skills, and experience.
                             Pick a question or type your own below.
                         </p>
                         <div className="welcome-grid">
@@ -226,7 +230,7 @@ function ChatbotUI() {
                             ))}
                         </div>
                         <button className="welcome-dismiss-lg" onClick={() => setShowWelcome(false)}>
-                            Skip — I'll type my own question
+                            Skip — I&apos;ll type my own question
                         </button>
                     </div>
                 )}
@@ -251,7 +255,7 @@ function ChatbotUI() {
 
                             {messages.map((msg, i) => (
                                 <div key={i} className={`chat-message chat-message-${msg.role} ${msg.isError ? 'chat-message-error' : ''}`}>
-                                    <div className="chat-avatar">
+                                    <div className="chat-avatar" role="img" aria-label={msg.role === 'assistant' ? 'Assistant' : 'User'}>
                                         {msg.role === 'assistant' ? '🤖' : <FiUser size={16} />}
                                     </div>
                                     <div className="chat-bubble">
@@ -265,7 +269,7 @@ function ChatbotUI() {
 
                             {isLoading && (
                                 <div className="chat-message chat-message-assistant">
-                                    <div className="chat-avatar">🤖</div>
+                                    <div className="chat-avatar" role="img" aria-label="Assistant">🤖</div>
                                     <div className="chat-bubble">
                                         <div className="chat-typing">
                                             <span className="typing-dot" />

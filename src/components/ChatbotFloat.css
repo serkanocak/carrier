@@ -433,7 +433,11 @@
         right: 12px;
         left: 12px;
         width: auto;
-        bottom: 80px;
+        bottom: 120px;
         height: 70vh;
+    }
+    .chatbot-toggle {
+        bottom: 60px;
+        right: 20px;
     }
 }
