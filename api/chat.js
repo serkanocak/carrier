@@ -1,8 +1,13 @@
-// Vercel Serverless Function — Gemini Chat API
-// Replaces HuggingFace Spaces dependency entirely
+const { createClient } = require('@supabase/supabase-js');
 
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
 const MODEL = 'gemini-2.5-flash';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
 // Tool definitions (mirrors HuggingFace app.py)
 const tools = [
@@ -310,9 +315,23 @@ export default async function handler(req, res) {
                 ];
             } else {
                 done = true;
-                return res.status(200).json({
-                    reply: choice.message?.content || "I'm sorry, I couldn't generate a response.",
+                const reply = choice.message?.content || "I'm sorry, I couldn't generate a response.";
+
+                // Log to Supabase (non-blocking)
+                supabase.from('chat_logs').insert([
+                  { 
+                    user_message: message, 
+                    bot_response: reply,
+                    metadata: { 
+                      model: MODEL,
+                      history_length: history.length
+                    }
+                  }
+                ]).then(({ error }) => {
+                  if (error) console.error('Supabase log error:', error);
                 });
+
+                return res.status(200).json({ reply });
             }
         }
     } catch (error) {
