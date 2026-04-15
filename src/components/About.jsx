@@ -4,21 +4,20 @@ import './About.css'
 
 const TERMINAL_LINES = [
     { delay: 100, prefix: '$ ', text: 'whoami', type: 'cmd' },
-    { delay: 400, text: 'serkan_ocak — Senior Software Developer & Tech Lead', type: 'output' },
+    { delay: 400, text: 'serkan_ocak — Senior Software Developer & Agentic AI Researcher', type: 'output' },
     { delay: 700, prefix: '$ ', text: 'cat location.txt', type: 'cmd' },
     { delay: 950, text: '📍 Frankfurt, Germany', type: 'output' },
     { delay: 1200, prefix: '$ ', text: 'cat experience.json', type: 'cmd' },
     { delay: 1450, text: '{', type: 'output' },
     { delay: 1550, text: '  "years": 15,', type: 'output-key' },
-    { delay: 1650, text: '  "currentRole": "Senior Dev / Tech Lead @ Mastra GmbH",', type: 'output-key' },
-    { delay: 1750, text: '  "expertise": [".NET", "SAP ABAP", "Project Management", "ERP"],', type: 'output-key' },
-
-
-    { delay: 1850, text: '  "projects": "20+ enterprise systems built"', type: 'output-key' },
-    { delay: 1950, text: '}', type: 'output' },
-    { delay: 2250, prefix: '$ ', text: 'cat languages.sh', type: 'cmd' },
-    { delay: 2500, text: '🇹🇷 TR (Native) | 🇬🇧 EN (Pro) | 🇷🇺 RU (Pro) | 🇩🇪 DE (B1)', type: 'output' },
-    { delay: 2800, prefix: '$ ', text: '_', type: 'cmd' },
+    { delay: 1650, text: '  "lastRole": "Software Tech Lead @ Mastra GmbH (until 02/2026)",', type: 'output-key' },
+    { delay: 1750, text: '  "status": "Open to opportunities",', type: 'output-key' },
+    { delay: 1850, text: '  "expertise": [".NET", "SAP ABAP", "DDD/CQRS", "ERP", "AI/Automation"],', type: 'output-key' },
+    { delay: 1950, text: '  "projects": "20+ enterprise systems built"', type: 'output-key' },
+    { delay: 2050, text: '}', type: 'output' },
+    { delay: 2350, prefix: '$ ', text: 'cat languages.sh', type: 'cmd' },
+    { delay: 2600, text: '🇹🇷 TR (Native) | 🇬🇧 EN (Pro) | 🇷🇺 RU (Limited) | 🇩🇪 DE (A2) | 🇪🇸 ES (Elementary)', type: 'output' },
+    { delay: 2900, prefix: '$ ', text: '_', type: 'cmd' },
 ]
 
 const STATS = [
@@ -60,22 +59,26 @@ export default function About() {
                     {/* Bio */}
                     <div className="about-bio">
                         <p className="about-text">
-                            I'm a <strong>Senior Software Developer and Tech Lead</strong> with over 15 years of
-                            experience designing and building robust, scalable enterprise software. My journey has
-                            taken me through major holding companies and consulting firms across Turkey and Germany.
+                            I'm a <strong>Senior Software Developer, Tech Lead & Agentic AI Researcher</strong> with
+                            over 15 years of experience designing and building robust, scalable enterprise software.
+                            My journey has taken me through major holding companies and consulting firms across
+                            Turkey and Germany.
                         </p>
                         <p className="about-text">
                             I specialize in the <strong>.NET ecosystem</strong> (Core, 6, 8), cloud platforms
                             (<strong>AWS & Docker</strong>), and complex <strong>SAP/ERP integrations</strong>.
-
                             I have led multi-tenant SaaS platform development, optimized CI/CD pipelines, and
-                            led software projects that power mission-critical business operations.
-
+                            led software projects that power mission-critical business operations using
+                            <strong> DDD, CQRS, and Clean Architecture</strong> principles.
                         </p>
                         <p className="about-text">
-                            Currently based in <strong>Frankfurt, Germany</strong>, I bring not just technical
-                            depth but also multilingual communication skills — bridging teams across cultures
-                            in Turkish, English, Russian, and German.
+                            I actively research and prototype with <strong>OpenAI Agents SDK, LangGraph, CrewAI,
+                            AutoGen, and RAG architectures</strong> — combining deep enterprise engineering
+                            expertise with cutting-edge AI to build intelligent automation solutions.
+                        </p>
+                        <p className="about-text">
+                            Based in <strong>Frankfurt, Germany</strong>, I bridge teams across cultures with
+                            multilingual communication in Turkish, English, Russian, German, and Spanish.
                         </p>
 
                         <div className="about-stats">

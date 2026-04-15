@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { FiDownload, FiCode, FiServer, FiCloud } from 'react-icons/fi'
+import { FiDownload, FiCode, FiServer, FiCloud, FiCpu } from 'react-icons/fi'
 import './Hero.css'
 
 const TITLES = [
@@ -7,7 +7,7 @@ const TITLES = [
     'Tech Lead',
     '.NET & SAP ABAP Expert',
     'Software Project Manager',
-    'Product Owner',
+    'Agentic AI Researcher',
     'Enterprise Systems Builder',
 ]
 
@@ -53,6 +53,9 @@ export default function Hero() {
             </div>
             <div className="floating-badge badge-3">
                 <FiServer size={14} /> Project Management
+            </div>
+            <div className="floating-badge badge-4">
+                <FiCpu size={14} /> Agentic AI
             </div>
 
             <div className="container hero-content">
